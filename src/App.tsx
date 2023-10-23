@@ -1,25 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
-import axios from 'axios'
 import './App.css';
-
-interface New {
-  author: string
-  content: string
-  description: string
-  publishedAt: Date
-  source: {
-    id: number
-    name: string
-  }
-  title: string
-  url: string
-  urlToImage: string
-}
-
+import { New } from './entities/news.entity'
+import News from './components/News';
+import Header from './components/Header';
 
 function App() {
-
   const [news, setNews] = useState<New[] | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -41,18 +26,20 @@ function App() {
   
   const RenderNews = () => {
     return (
-      <div>
-        {news?.map(x => <p key={x.title} className="text-3xl font-bold underline p-10"> {x.title} </p>)}
+      <div className='grid justify-items-center'>
+        {news?.map((newx, index) => (
+          <News key={index} {...newx} />
+        ))}
       </div>
     );
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <div className="App text-white decoration-sky-500/30">
+        <Header />
+
+        <div className="text-5xl p-10 font-light underline underline-offset-8">Ultimate News</div>
         { isLoading ? <p>Loading...</p> : <RenderNews /> }
-      </header>
     </div>
   );
 }
