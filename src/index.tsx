@@ -3,13 +3,35 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Auth0Provider, AuthorizationParams } from '@auth0/auth0-react';
+import { createBrowserHistory } from 'history';   // ADD THIS LINE ?
+
+const e =  createBrowserHistory();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+const ea: AuthorizationParams = {
+  redirect_uri: window.location.origin,
+  audience: ''
+}
+
+const onRedirectCallback = (appState:any) => {
+  e.push(
+    appState && appState.returnTo ? appState.returnTo : window.location.pathname
+  );
+};
+
 root.render(
   <React.StrictMode>
-    <App />
+    <Auth0Provider
+      domain='dev-2elrfwmynotc1ef0.us.auth0.com'
+      clientId='Imo8vKufRITJb6j8M4wcrO3Ki1BTDIPO'
+      onRedirectCallback={onRedirectCallback}
+      authorizationParams={ea}
+    >
+      <App />
+    </Auth0Provider>
   </React.StrictMode>
 );
 
